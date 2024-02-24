@@ -3,4 +3,16 @@ spring:
     pathmatch:
       #  swagger升级2.6x之后和springboot出现了不兼容情况
       matching-strategy: ant_path_matcher
+  datasource:
+    #   数据源基本配置
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mybatch?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    type: com.alibaba.druid.pool.DruidDataSource
+mybatis:
+  # 指定全局配置文件位置
+  config-location: classpath:mybatis-config.xml
+  # 指定sql映射文件位置
+  mapper-locations: classpath:mapper/*.xml
 

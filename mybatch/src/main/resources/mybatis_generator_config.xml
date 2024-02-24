@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!--连接数据库驱动的位置,使用的是mysql8-->
+    <classPathEntry location="${user.home}/.m2/repository/mysql/mysql-connector-java/8.0.18/mysql-connector-java-8.0.18.jar" />
+
+    <context id="mysqlContext" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <property name="suppressDate" value="false"/>
+            <property name="suppressAllComments" value="true"/>
+            <property name="javaFileEncoding" value="UTF-8"/>
+        </commentGenerator>
+        <!--mysql数据库连接-->
+        <!--nullCatalogMeansCurrent=true这个参数是特地为解决catalog异常问题而配置的-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/yu_jiao_yu_le?serverTimezone=GMT%2b8"
+                        userId="root"
+                        password="root">
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!--model生成目录-->
+        <javaModelGenerator targetPackage="com.wdd.mybatch.core.po" targetProject="src/main/java">
+            <property name="enableSubPackages" value="false"/><!--是否让schema作为包的后缀-->
+            <property name="trimStrings" value="true"/><!--从数据库返回的值是否清理前后的空格-->
+        </javaModelGenerator>
+
+        <!--mapper.xml生成目录-->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="false"/>
+            <!--当useJSR310Types为true时，就会jdbc对应的日期类型会转成java8中的LocateDateTime类型，如果useJSR310Types为false，则还是转成java.util.Date类型-->
+            <property name="useJSR310Types" value="true"/>
+        </sqlMapGenerator>
+
+        <!--接口生成目录-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.wdd.mybatch.core.mapper"
+                             targetProject="src/main/java">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+<!--        <table tableName="student"-->
+<!--               domainObjectName="Student"-->
+<!--               mapperName="StudentMapper"-->
+<!--               enableCountByExample="false" enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false">-->
+<!--            <property name="useActualColumnNames" value="false"/>-->
+<!--            <columnOverride column="birthday" javaType="java.time.LocalDate"/>-->
+<!--            <ignoreColumn column="create_time"/>-->
+<!--            <ignoreColumn column="update_time"/>-->
+<!--        </table>-->
+
+<!--        <table schema="db_ccc_batch" tableName="bat_apply_detail"-->
+<!--               domainObjectName="ApplyDetail"-->
+<!--               mapperName="ApplyDetailMapper"-->
+<!--               enableCountByExample="false" enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false">-->
+<!--            <property name="useActualColumnNames" value="false"/>-->
+<!--            <columnOverride column="expiry_date" javaType="java.time.LocalDate"/>-->
+<!--            <columnOverride column="next_reissue_date" javaType="java.time.LocalDate"/>-->
+<!--            <columnOverride column="media_status" javaType="com.sankuai.ccc.common.dictionary.enums.MediaStatus"/>-->
+<!--            <columnOverride column="process_date" javaType="java.time.LocalDate"/>-->
+<!--            <ignoreColumn column="gmt_create"/>-->
+<!--            <ignoreColumn column="gmt_modified"/>-->
+<!--        </table>-->
+
+<!--                <table  tableName="execute_command_result"-->
+<!--                       domainObjectName="ExecuteCommandResult"-->
+<!--                       mapperName="ExecuteCommandResultMapper"-->
+<!--                       enableCountByExample="false" enableUpdateByExample="false"-->
+<!--                       enableDeleteByExample="false" enableSelectByExample="false"-->
+<!--                       selectByExampleQueryId="false">-->
+<!--                    <property name="useActualColumnNames" value="false"/>-->
+<!--                    <ignoreColumn column="ack_time"/>-->
+<!--                    <ignoreColumn column="begin_time"/>-->
+<!--                    <ignoreColumn column="complete_time"/>-->
+<!--                    <ignoreColumn column="id"/>-->
+<!--                </table>-->
+
+
+<!--        useActualColumnNames用于指定生成实体类时是否使用实际的列名作为实体类的属性名。取值true或false:-->
+<!--        true-->
+<!--        MyBatis Generator会使用数据库中实际的字段名字作为生成的实体类的属性名。-->
+<!--        false-->
+<!--        这是默认值。如果设置为false,则MyBatis Generator会将数据库中实际的字段名字转换为Camel Case风格作为生成的实体类的属性名。-->
+
+
+<!--        <table tableName="task"-->
+<!--               domainObjectName="TaskPO"-->
+<!--               mapperName="TaskMapper"-->
+<!--               enableCountByExample="false" enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false">-->
+<!--            <property name="useActualColumnNames" value="false"/>-->
+<!--            <columnOverride column="business_time" javaType="java.time.LocalDateTime"/>-->
+<!--            <columnOverride column="start_time" javaType="java.time.LocalDateTime"/>-->
+<!--            <columnOverride column="end_time" javaType="java.time.LocalDateTime"/>-->
+<!--            <columnOverride column="task_data" javaType="java.lang.String"/>-->
+<!--            <ignoreColumn column="add_time"/>-->
+<!--            <ignoreColumn column="update_time"/>-->
+<!--        </table>-->
+
+
+<!--        <table tableName="task_slice"-->
+<!--               domainObjectName="TaskSlicePO"-->
+<!--               mapperName="TaskSliceMapper"-->
+<!--               enableCountByExample="false" enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false">-->
+<!--            <property name="useActualColumnNames" value="false"/>-->
+<!--            <columnOverride column="start_time" javaType="java.time.LocalDateTime"/>-->
+<!--            <columnOverride column="end_time" javaType="java.time.LocalDateTime"/>-->
+<!--            <ignoreColumn column="add_time"/>-->
+<!--            <ignoreColumn column="update_time"/>-->
+<!--        </table>-->
+
+<!--        <table tableName="excel_line"-->
+<!--               domainObjectName="ExcelLinePO"-->
+<!--               mapperName="ExcelLineMapper"-->
+<!--               enableCountByExample="false" enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false">-->
+<!--            <property name="useActualColumnNames" value="false"/>-->
+<!--            <columnOverride column="raw_json" javaType="java.lang.String"/>-->
+<!--            <ignoreColumn column="add_time"/>-->
+<!--            <ignoreColumn column="update_time"/>-->
+<!--        </table>-->
+
+    </context>
+</generatorConfiguration>

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wdd.mybatch.core.mapper.TaskMapper">
+  <resultMap id="BaseResultMap" type="com.wdd.mybatch.core.po.TaskPO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="task_type" jdbcType="VARCHAR" property="taskType" />
+    <result column="business_time" jdbcType="TIMESTAMP" property="businessTime" />
+    <result column="business_id" jdbcType="VARCHAR" property="businessId" />
+    <result column="task_status" jdbcType="VARCHAR" property="taskStatus" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="total_cnt" jdbcType="BIGINT" property="totalCnt" />
+    <result column="success_cnt" jdbcType="BIGINT" property="successCnt" />
+    <result column="fail_cnt" jdbcType="BIGINT" property="failCnt" />
+    <result column="skip_cnt" jdbcType="BIGINT" property="skipCnt" />
+    <result column="expect_total_cnt" jdbcType="BIGINT" property="expectTotalCnt" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.wdd.mybatch.core.po.TaskPO">
+    <result column="task_data" jdbcType="LONGVARCHAR" property="taskData" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, task_type, business_time, business_id, task_status, start_time, end_time, operator, 
+    total_cnt, success_cnt, fail_cnt, skip_cnt, expect_total_cnt
+  </sql>
+  <sql id="Blob_Column_List">
+    task_data
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from task
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from task
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wdd.mybatch.core.po.TaskPO">
+    insert into task (id, task_type, business_time, 
+      business_id, task_status, start_time, 
+      end_time, operator, total_cnt, 
+      success_cnt, fail_cnt, skip_cnt, 
+      expect_total_cnt, task_data)
+    values (#{id,jdbcType=BIGINT}, #{taskType,jdbcType=VARCHAR}, #{businessTime,jdbcType=TIMESTAMP}, 
+      #{businessId,jdbcType=VARCHAR}, #{taskStatus,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP}, #{operator,jdbcType=VARCHAR}, #{totalCnt,jdbcType=BIGINT}, 
+      #{successCnt,jdbcType=BIGINT}, #{failCnt,jdbcType=BIGINT}, #{skipCnt,jdbcType=BIGINT}, 
+      #{expectTotalCnt,jdbcType=BIGINT}, #{taskData,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wdd.mybatch.core.po.TaskPO">
+    insert into task
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="taskType != null">
+        task_type,
+      </if>
+      <if test="businessTime != null">
+        business_time,
+      </if>
+      <if test="businessId != null">
+        business_id,
+      </if>
+      <if test="taskStatus != null">
+        task_status,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="operator != null">
+        operator,
+      </if>
+      <if test="totalCnt != null">
+        total_cnt,
+      </if>
+      <if test="successCnt != null">
+        success_cnt,
+      </if>
+      <if test="failCnt != null">
+        fail_cnt,
+      </if>
+      <if test="skipCnt != null">
+        skip_cnt,
+      </if>
+      <if test="expectTotalCnt != null">
+        expect_total_cnt,
+      </if>
+      <if test="taskData != null">
+        task_data,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="taskType != null">
+        #{taskType,jdbcType=VARCHAR},
+      </if>
+      <if test="businessTime != null">
+        #{businessTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="businessId != null">
+        #{businessId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskStatus != null">
+        #{taskStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="totalCnt != null">
+        #{totalCnt,jdbcType=BIGINT},
+      </if>
+      <if test="successCnt != null">
+        #{successCnt,jdbcType=BIGINT},
+      </if>
+      <if test="failCnt != null">
+        #{failCnt,jdbcType=BIGINT},
+      </if>
+      <if test="skipCnt != null">
+        #{skipCnt,jdbcType=BIGINT},
+      </if>
+      <if test="expectTotalCnt != null">
+        #{expectTotalCnt,jdbcType=BIGINT},
+      </if>
+      <if test="taskData != null">
+        #{taskData,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wdd.mybatch.core.po.TaskPO">
+    update task
+    <set>
+      <if test="taskType != null">
+        task_type = #{taskType,jdbcType=VARCHAR},
+      </if>
+      <if test="businessTime != null">
+        business_time = #{businessTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="businessId != null">
+        business_id = #{businessId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskStatus != null">
+        task_status = #{taskStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null">
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="totalCnt != null">
+        total_cnt = #{totalCnt,jdbcType=BIGINT},
+      </if>
+      <if test="successCnt != null">
+        success_cnt = #{successCnt,jdbcType=BIGINT},
+      </if>
+      <if test="failCnt != null">
+        fail_cnt = #{failCnt,jdbcType=BIGINT},
+      </if>
+      <if test="skipCnt != null">
+        skip_cnt = #{skipCnt,jdbcType=BIGINT},
+      </if>
+      <if test="expectTotalCnt != null">
+        expect_total_cnt = #{expectTotalCnt,jdbcType=BIGINT},
+      </if>
+      <if test="taskData != null">
+        task_data = #{taskData,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.wdd.mybatch.core.po.TaskPO">
+    update task
+    set task_type = #{taskType,jdbcType=VARCHAR},
+      business_time = #{businessTime,jdbcType=TIMESTAMP},
+      business_id = #{businessId,jdbcType=VARCHAR},
+      task_status = #{taskStatus,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      operator = #{operator,jdbcType=VARCHAR},
+      total_cnt = #{totalCnt,jdbcType=BIGINT},
+      success_cnt = #{successCnt,jdbcType=BIGINT},
+      fail_cnt = #{failCnt,jdbcType=BIGINT},
+      skip_cnt = #{skipCnt,jdbcType=BIGINT},
+      expect_total_cnt = #{expectTotalCnt,jdbcType=BIGINT},
+      task_data = #{taskData,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wdd.mybatch.core.po.TaskPO">
+    update task
+    set task_type = #{taskType,jdbcType=VARCHAR},
+      business_time = #{businessTime,jdbcType=TIMESTAMP},
+      business_id = #{businessId,jdbcType=VARCHAR},
+      task_status = #{taskStatus,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      operator = #{operator,jdbcType=VARCHAR},
+      total_cnt = #{totalCnt,jdbcType=BIGINT},
+      success_cnt = #{successCnt,jdbcType=BIGINT},
+      fail_cnt = #{failCnt,jdbcType=BIGINT},
+      skip_cnt = #{skipCnt,jdbcType=BIGINT},
+      expect_total_cnt = #{expectTotalCnt,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

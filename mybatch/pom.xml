@@ -30,27 +30,27 @@
             <scope>test</scope>
         </dependency>
 
-<!--        &lt;!&ndash; 2.springboot整合mybatis &ndash;&gt;-->
-<!--        &lt;!&ndash; 整合MyBatis &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.mybatis.spring.boot</groupId>-->
-<!--            <artifactId>mybatis-spring-boot-starter</artifactId>-->
-<!--            <version>2.1.0</version>-->
-<!--        </dependency>-->
+        <!-- 2.springboot整合mybatis -->
+        <!-- 整合MyBatis -->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>2.1.0</version>
+        </dependency>
 
-<!--        &lt;!&ndash; MySQL驱动 &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>mysql</groupId>-->
-<!--            <artifactId>mysql-connector-java</artifactId>-->
-<!--            <version>8.0.18</version>-->
-<!--        </dependency>-->
+        <!-- MySQL驱动 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.18</version>
+        </dependency>
 
-<!--        &lt;!&ndash; 数据库连接池 &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>com.alibaba</groupId>-->
-<!--            <artifactId>druid</artifactId>-->
-<!--            <version>1.1.18</version>-->
-<!--        </dependency>-->
+        <!-- 数据库连接池 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.1.18</version>
+        </dependency>
 
         <!-- 3.swagger2 -->
         <dependency>
@@ -120,6 +120,17 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <version>1.4.0</version>
+                <!--mybatis_generator配置文件位置-->
+                <configuration>
+                    <configurationFile>src/main/resources/mybatis_generator_config.xml</configurationFile>
+                    <verbose>true</verbose>
+                </configuration>
             </plugin>
         </plugins>
     </build>

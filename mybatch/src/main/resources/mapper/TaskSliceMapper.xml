@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wdd.mybatch.core.mapper.TaskSliceMapper">
+  <resultMap id="BaseResultMap" type="com.wdd.mybatch.core.po.TaskSlicePO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="task_id" jdbcType="BIGINT" property="taskId" />
+    <result column="business_id" jdbcType="VARCHAR" property="businessId" />
+    <result column="slice_status" jdbcType="VARCHAR" property="sliceStatus" />
+    <result column="slice_data" jdbcType="VARCHAR" property="sliceData" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="total_cnt" jdbcType="BIGINT" property="totalCnt" />
+    <result column="success_cnt" jdbcType="BIGINT" property="successCnt" />
+    <result column="fail_cnt" jdbcType="BIGINT" property="failCnt" />
+    <result column="skip_cnt" jdbcType="BIGINT" property="skipCnt" />
+    <result column="round_number" jdbcType="INTEGER" property="roundNumber" />
+    <result column="fail_reason" jdbcType="VARCHAR" property="failReason" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, task_id, business_id, slice_status, slice_data, start_time, end_time, total_cnt, 
+    success_cnt, fail_cnt, skip_cnt, round_number, fail_reason
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from task_slice
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from task_slice
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wdd.mybatch.core.po.TaskSlicePO">
+    insert into task_slice (id, task_id, business_id, 
+      slice_status, slice_data, start_time, 
+      end_time, total_cnt, success_cnt, 
+      fail_cnt, skip_cnt, round_number, 
+      fail_reason)
+    values (#{id,jdbcType=BIGINT}, #{taskId,jdbcType=BIGINT}, #{businessId,jdbcType=VARCHAR}, 
+      #{sliceStatus,jdbcType=VARCHAR}, #{sliceData,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP}, #{totalCnt,jdbcType=BIGINT}, #{successCnt,jdbcType=BIGINT}, 
+      #{failCnt,jdbcType=BIGINT}, #{skipCnt,jdbcType=BIGINT}, #{roundNumber,jdbcType=INTEGER}, 
+      #{failReason,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wdd.mybatch.core.po.TaskSlicePO">
+    insert into task_slice
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="taskId != null">
+        task_id,
+      </if>
+      <if test="businessId != null">
+        business_id,
+      </if>
+      <if test="sliceStatus != null">
+        slice_status,
+      </if>
+      <if test="sliceData != null">
+        slice_data,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="totalCnt != null">
+        total_cnt,
+      </if>
+      <if test="successCnt != null">
+        success_cnt,
+      </if>
+      <if test="failCnt != null">
+        fail_cnt,
+      </if>
+      <if test="skipCnt != null">
+        skip_cnt,
+      </if>
+      <if test="roundNumber != null">
+        round_number,
+      </if>
+      <if test="failReason != null">
+        fail_reason,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="taskId != null">
+        #{taskId,jdbcType=BIGINT},
+      </if>
+      <if test="businessId != null">
+        #{businessId,jdbcType=VARCHAR},
+      </if>
+      <if test="sliceStatus != null">
+        #{sliceStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="sliceData != null">
+        #{sliceData,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="totalCnt != null">
+        #{totalCnt,jdbcType=BIGINT},
+      </if>
+      <if test="successCnt != null">
+        #{successCnt,jdbcType=BIGINT},
+      </if>
+      <if test="failCnt != null">
+        #{failCnt,jdbcType=BIGINT},
+      </if>
+      <if test="skipCnt != null">
+        #{skipCnt,jdbcType=BIGINT},
+      </if>
+      <if test="roundNumber != null">
+        #{roundNumber,jdbcType=INTEGER},
+      </if>
+      <if test="failReason != null">
+        #{failReason,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wdd.mybatch.core.po.TaskSlicePO">
+    update task_slice
+    <set>
+      <if test="taskId != null">
+        task_id = #{taskId,jdbcType=BIGINT},
+      </if>
+      <if test="businessId != null">
+        business_id = #{businessId,jdbcType=VARCHAR},
+      </if>
+      <if test="sliceStatus != null">
+        slice_status = #{sliceStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="sliceData != null">
+        slice_data = #{sliceData,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="totalCnt != null">
+        total_cnt = #{totalCnt,jdbcType=BIGINT},
+      </if>
+      <if test="successCnt != null">
+        success_cnt = #{successCnt,jdbcType=BIGINT},
+      </if>
+      <if test="failCnt != null">
+        fail_cnt = #{failCnt,jdbcType=BIGINT},
+      </if>
+      <if test="skipCnt != null">
+        skip_cnt = #{skipCnt,jdbcType=BIGINT},
+      </if>
+      <if test="roundNumber != null">
+        round_number = #{roundNumber,jdbcType=INTEGER},
+      </if>
+      <if test="failReason != null">
+        fail_reason = #{failReason,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wdd.mybatch.core.po.TaskSlicePO">
+    update task_slice
+    set task_id = #{taskId,jdbcType=BIGINT},
+      business_id = #{businessId,jdbcType=VARCHAR},
+      slice_status = #{sliceStatus,jdbcType=VARCHAR},
+      slice_data = #{sliceData,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      total_cnt = #{totalCnt,jdbcType=BIGINT},
+      success_cnt = #{successCnt,jdbcType=BIGINT},
+      fail_cnt = #{failCnt,jdbcType=BIGINT},
+      skip_cnt = #{skipCnt,jdbcType=BIGINT},
+      round_number = #{roundNumber,jdbcType=INTEGER},
+      fail_reason = #{failReason,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

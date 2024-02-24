@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wdd.mybatch.core.mapper.ExcelLineMapper">
+  <resultMap id="BaseResultMap" type="com.wdd.mybatch.core.po.ExcelLinePO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="batch_no" jdbcType="VARCHAR" property="batchNo" />
+    <result column="line_no" jdbcType="BIGINT" property="lineNo" />
+    <result column="shard_value" jdbcType="VARCHAR" property="shardValue" />
+    <result column="business_id" jdbcType="VARCHAR" property="businessId" />
+    <result column="error_message" jdbcType="VARCHAR" property="errorMessage" />
+    <result column="confirm_status" jdbcType="VARCHAR" property="confirmStatus" />
+    <result column="result_status" jdbcType="VARCHAR" property="resultStatus" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.wdd.mybatch.core.po.ExcelLinePO">
+    <result column="raw_json" jdbcType="LONGVARCHAR" property="rawJson" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, batch_no, line_no, shard_value, business_id, error_message, confirm_status, result_status
+  </sql>
+  <sql id="Blob_Column_List">
+    raw_json
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from excel_line
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from excel_line
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wdd.mybatch.core.po.ExcelLinePO">
+    insert into excel_line (id, batch_no, line_no, 
+      shard_value, business_id, error_message, 
+      confirm_status, result_status, raw_json
+      )
+    values (#{id,jdbcType=BIGINT}, #{batchNo,jdbcType=VARCHAR}, #{lineNo,jdbcType=BIGINT}, 
+      #{shardValue,jdbcType=VARCHAR}, #{businessId,jdbcType=VARCHAR}, #{errorMessage,jdbcType=VARCHAR}, 
+      #{confirmStatus,jdbcType=VARCHAR}, #{resultStatus,jdbcType=VARCHAR}, #{rawJson,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wdd.mybatch.core.po.ExcelLinePO">
+    insert into excel_line
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="batchNo != null">
+        batch_no,
+      </if>
+      <if test="lineNo != null">
+        line_no,
+      </if>
+      <if test="shardValue != null">
+        shard_value,
+      </if>
+      <if test="businessId != null">
+        business_id,
+      </if>
+      <if test="errorMessage != null">
+        error_message,
+      </if>
+      <if test="confirmStatus != null">
+        confirm_status,
+      </if>
+      <if test="resultStatus != null">
+        result_status,
+      </if>
+      <if test="rawJson != null">
+        raw_json,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="batchNo != null">
+        #{batchNo,jdbcType=VARCHAR},
+      </if>
+      <if test="lineNo != null">
+        #{lineNo,jdbcType=BIGINT},
+      </if>
+      <if test="shardValue != null">
+        #{shardValue,jdbcType=VARCHAR},
+      </if>
+      <if test="businessId != null">
+        #{businessId,jdbcType=VARCHAR},
+      </if>
+      <if test="errorMessage != null">
+        #{errorMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmStatus != null">
+        #{confirmStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="resultStatus != null">
+        #{resultStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="rawJson != null">
+        #{rawJson,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wdd.mybatch.core.po.ExcelLinePO">
+    update excel_line
+    <set>
+      <if test="batchNo != null">
+        batch_no = #{batchNo,jdbcType=VARCHAR},
+      </if>
+      <if test="lineNo != null">
+        line_no = #{lineNo,jdbcType=BIGINT},
+      </if>
+      <if test="shardValue != null">
+        shard_value = #{shardValue,jdbcType=VARCHAR},
+      </if>
+      <if test="businessId != null">
+        business_id = #{businessId,jdbcType=VARCHAR},
+      </if>
+      <if test="errorMessage != null">
+        error_message = #{errorMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmStatus != null">
+        confirm_status = #{confirmStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="resultStatus != null">
+        result_status = #{resultStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="rawJson != null">
+        raw_json = #{rawJson,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.wdd.mybatch.core.po.ExcelLinePO">
+    update excel_line
+    set batch_no = #{batchNo,jdbcType=VARCHAR},
+      line_no = #{lineNo,jdbcType=BIGINT},
+      shard_value = #{shardValue,jdbcType=VARCHAR},
+      business_id = #{businessId,jdbcType=VARCHAR},
+      error_message = #{errorMessage,jdbcType=VARCHAR},
+      confirm_status = #{confirmStatus,jdbcType=VARCHAR},
+      result_status = #{resultStatus,jdbcType=VARCHAR},
+      raw_json = #{rawJson,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wdd.mybatch.core.po.ExcelLinePO">
+    update excel_line
+    set batch_no = #{batchNo,jdbcType=VARCHAR},
+      line_no = #{lineNo,jdbcType=BIGINT},
+      shard_value = #{shardValue,jdbcType=VARCHAR},
+      business_id = #{businessId,jdbcType=VARCHAR},
+      error_message = #{errorMessage,jdbcType=VARCHAR},
+      confirm_status = #{confirmStatus,jdbcType=VARCHAR},
+      result_status = #{resultStatus,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

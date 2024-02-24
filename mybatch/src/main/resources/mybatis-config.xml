@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+    <typeHandlers>
+        <!-- 使用java8之中的日期和时间类型 -->
+        <typeHandler jdbcType="TIMESTAMP" javaType="java.time.Instant" handler="org.apache.ibatis.type.InstantTypeHandler" />
+        <typeHandler jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime" handler="org.apache.ibatis.type.LocalDateTimeTypeHandler" />
+        <typeHandler jdbcType="DATE" javaType="java.time.LocalDate" handler="org.apache.ibatis.type.LocalDateTypeHandler" />
+        <typeHandler jdbcType="TIME" javaType="java.time.LocalTime" handler="org.apache.ibatis.type.LocalTimeTypeHandler" />
+        <typeHandler jdbcType="TIMESTAMP" javaType="java.time.OffsetDateTime" handler="org.apache.ibatis.type.OffsetDateTimeTypeHandler" />
+        <typeHandler jdbcType="TIME" javaType="java.time.OffsetTime" handler="org.apache.ibatis.type.OffsetTimeTypeHandler" />
+        <typeHandler jdbcType="TIMESTAMP" javaType="java.time.ZonedDateTime" handler="org.apache.ibatis.type.ZonedDateTimeTypeHandler" />
+        <typeHandler jdbcType="INTEGER" javaType="java.time.Year" handler="org.apache.ibatis.type.YearTypeHandler" />
+        <typeHandler jdbcType="INTEGER" javaType="java.time.Month" handler="org.apache.ibatis.type.MonthTypeHandler" />
+        <typeHandler jdbcType="VARCHAR" javaType="java.time.YearMonth" handler="org.apache.ibatis.type.YearMonthTypeHandler" />
+    </typeHandlers>
+
+
+</configuration>

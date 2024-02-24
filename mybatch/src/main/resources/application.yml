@@ -1,0 +1,6 @@
+spring:
+  mvc:
+    pathmatch:
+      #  swagger升级2.6x之后和springboot出现了不兼容情况
+      matching-strategy: ant_path_matcher
+

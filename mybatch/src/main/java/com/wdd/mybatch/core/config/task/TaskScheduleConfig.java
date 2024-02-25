@@ -99,7 +99,7 @@ public interface TaskScheduleConfig {
 
 
     /**
-     * 分片执行超时时间？？
+     * 分片执行超时时间，如果超过指定时间，重置状态
      * @param taskType
      * @return
      */

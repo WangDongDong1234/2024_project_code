@@ -29,6 +29,8 @@ public class TaskSlicePO {
 
     private String failReason;
 
+    private LocalDateTime updateTime;
+
     public Long getId() {
         return id;
     }
@@ -131,5 +133,13 @@ public class TaskSlicePO {
 
     public void setFailReason(String failReason) {
         this.failReason = failReason == null ? null : failReason.trim();
+    }
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
     }
 }

@@ -37,4 +37,18 @@ public class TaskExecutorFactory implements InitializingBean {
         dummyTask.setTaskType(taskTypeEnum);
         taskExecutorMap.get(TaskStatusEnum.CREATE).execute(dummyTask);
     }
+
+    /**
+     * 执行任务
+     *
+     * @param task
+     */
+    public void executeTask(Task task) {
+        TaskExecutor taskExecutor = taskExecutorMap.get(task.getTaskStatus());
+        if (taskExecutor == null) {
+            log.info("任务处于不可调度状态：{}", task);
+            return;
+        }
+        taskExecutor.execute(task);
+    }
 }

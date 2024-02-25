@@ -72,6 +72,8 @@ public class TaskSlice {
      */
     private String failReason;
 
+    private LocalDateTime updateTime;
+
     /**
      * 初始
      * @param id
@@ -137,7 +139,7 @@ public class TaskSlice {
         sliceStatus=TaskSliceStatusEnum.FAIL;
     }
 
-    public void asyncRefreshProcess(TaskSliceProgress sliceProgress){
+    public void asyncRefreshProgress(TaskSliceProgress sliceProgress){
         successCnt+=sliceProgress.getSuccessCnt();
         failCnt+=sliceProgress.getFailCnt();
         skipCnt+=sliceProgress.getSkipCnt();

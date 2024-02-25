@@ -10,12 +10,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class TaskMergeExecutor extends BaseTaskExecutor {
     @Override
-    protected void doExecute(Task task) {
-
+    public TaskStatusEnum support() {
+        return TaskStatusEnum.SLICE_MERGE;
     }
 
     @Override
-    public TaskStatusEnum support() {
-        return TaskStatusEnum.SLICE_RUNNING;
+    protected void doExecute(Task task) {
+        taskRunnerFactory.mergeSplice(task);
+
+        // 取最新
+        Task currentTask = taskRepository.queryById(task.getId());
+        if (currentTask.isPause() || currentTask.isFinal()) {
+            return;
+        }
+
+        task.setTaskStatus(TaskStatusEnum.BEFORE_COMPLETE);
+        taskRepository.updateById(task);
     }
 }

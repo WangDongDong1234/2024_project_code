@@ -30,18 +30,7 @@
     delete from task_slice
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.wdd.mybatch.core.po.TaskSlicePO">
-    insert into task_slice (id, task_id, business_id, 
-      slice_status, slice_data, start_time, 
-      end_time, total_cnt, success_cnt, 
-      fail_cnt, skip_cnt, round_number, 
-      fail_reason)
-    values (#{id,jdbcType=BIGINT}, #{taskId,jdbcType=BIGINT}, #{businessId,jdbcType=VARCHAR}, 
-      #{sliceStatus,jdbcType=VARCHAR}, #{sliceData,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, 
-      #{endTime,jdbcType=TIMESTAMP}, #{totalCnt,jdbcType=BIGINT}, #{successCnt,jdbcType=BIGINT}, 
-      #{failCnt,jdbcType=BIGINT}, #{skipCnt,jdbcType=BIGINT}, #{roundNumber,jdbcType=INTEGER}, 
-      #{failReason,jdbcType=VARCHAR})
-  </insert>
+
   <insert id="insertSelective" parameterType="com.wdd.mybatch.core.po.TaskSlicePO">
     insert into task_slice
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -185,4 +174,253 @@
       fail_reason = #{failReason,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="queryById" parameterType="long"
+          resultType="com.wdd.mybatch.core.po.TaskSlicePO">
+        <![CDATA[
+    select id,
+           task_id,
+           business_id,
+           slice_status,
+           slice_data,
+           total_cnt,
+           success_cnt,
+           fail_cnt,
+           skip_cnt,
+           round_number,
+           fail_reason,
+           start_time,
+           end_time,
+           update_time
+    from task_slice
+    where id = #{ id }
+      limit 1
+    ]]>
+    </select>
+
+  <select id="lockById" parameterType="long"
+          resultType="com.wdd.mybatch.core.po.TaskSlicePO">
+        <![CDATA[
+    select id,
+           task_id,
+           business_id,
+           slice_status,
+           slice_data,
+           total_cnt,
+           success_cnt,
+           fail_cnt,
+           skip_cnt,
+           round_number,
+           fail_reason,
+           start_time,
+           end_time,
+           update_time
+    from task_slice
+    where id = #{ id }
+      limit 1
+        for update
+    ]]>
+    </select>
+
+  <select id="sumSuccessFailCntByTaskId" parameterType="long" resultType="com.wdd.mybatch.core.vo.TaskSliceProgress">
+        <![CDATA[
+    select sum(success_cnt) successCnt,
+           sum(fail_cnt) failCnt,
+           sum(skip_cnt) skipCnt
+    from task_slice
+    where task_id = #{ taskId }
+      limit 1
+    ]]>
+    </select>
+
+  <select id="queryByTaskIdStatus" resultType="com.wdd.mybatch.core.po.TaskSlicePO">
+        <![CDATA[
+    select id,
+           task_id,
+           business_id,
+           slice_status,
+           slice_data,
+           total_cnt,
+           success_cnt,
+           fail_cnt,
+           skip_cnt,
+           round_number,
+           fail_reason,
+           start_time,
+           end_time,
+           update_time
+    from task_slice
+    where task_id = #{taskId}
+      and slice_status = #{ taskSliceStatus }
+      limit #{ limit }
+    ]]>
+    </select>
+
+  <select id="queryByTaskIdBizId" resultType="com.wdd.mybatch.core.po.TaskSlicePO">
+        <![CDATA[
+    select id,
+           task_id,
+           business_id,
+           slice_status,
+           slice_data,
+           total_cnt,
+           success_cnt,
+           fail_cnt,
+           skip_cnt,
+           round_number,
+           fail_reason,
+           start_time,
+           end_time,
+           update_time
+    from task_slice
+    where task_id = #{taskId}
+      and business_id = #{businessId}
+      limit 1
+    ]]>
+    </select>
+
+  <select id="queryByTaskIdBizIds" resultType="java.lang.String">
+    select business_id
+    from task_slice
+    where task_id = #{taskId}
+    and business_id in
+    <foreach item="item" collection="businessIds"  open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
+
+  <select id="queryByTaskId" resultType="com.wdd.mybatch.core.po.TaskSlicePO">
+        <![CDATA[
+    select id,
+           task_id,
+           business_id,
+           slice_status,
+           slice_data,
+           total_cnt,
+           success_cnt,
+           fail_cnt,
+           skip_cnt,
+           round_number,
+           fail_reason,
+           start_time,
+           end_time,
+           update_time
+    from task_slice
+    where task_id = #{taskId}
+    ]]>
+    </select>
+
+  <select id="countByTaskIdStatus" resultType="long">
+        <![CDATA[
+    select count(1)
+    from task_slice
+    where task_id = #{ taskId }
+      and slice_status = #{ taskSliceStatus }
+    ]]>
+    </select>
+
+  <insert id="insert" parameterType="com.wdd.mybatch.core.po.TaskSlicePO" keyProperty="id">
+        <![CDATA[
+    insert into task_slice (
+      id,
+      task_id,
+      business_id,
+      slice_status,
+      slice_data,
+      total_cnt,
+      success_cnt,
+      fail_cnt,
+      skip_cnt,
+      round_number,
+      fail_reason,
+      start_time,
+      end_time,
+      add_time,
+      update_time
+    )
+    values (
+             #{ id },
+             #{ taskId },
+             #{ businessId },
+             #{ sliceStatus },
+             #{ sliceData },
+             #{ totalCnt },
+             #{ successCnt },
+             #{ failCnt },
+             #{ skipCnt },
+             #{ roundNumber },
+             #{ failReason },
+             #{ startTime },
+             #{ endTime },
+             now(),
+             now()
+           )
+    ]]>
+    </insert>
+
+  <insert id="insertList" parameterType="com.wdd.mybatch.core.po.TaskSlicePO" keyProperty="id">
+    insert into task_slice (
+    id,
+    task_id,
+    business_id,
+    slice_status,
+    slice_data,
+    total_cnt,
+    success_cnt,
+    fail_cnt,
+    skip_cnt,
+    round_number,
+    fail_reason,
+    start_time,
+    end_time,
+    add_time,
+    update_time
+    )
+    values
+    <foreach collection="taskSlicePOs" separator="," item="item">
+      (
+      #{ item.id },
+      #{ item.taskId },
+      #{ item.businessId },
+      #{ item.sliceStatus },
+      #{ item.sliceData },
+      #{ item.totalCnt },
+      #{ item.successCnt },
+      #{ item.failCnt },
+      #{ item.skipCnt },
+      #{ item.roundNumber },
+      #{ item.failReason },
+      #{ item.startTime },
+      #{ item.endTime },
+      now(),
+      now()
+      )
+    </foreach>
+  </insert>
+
+  <update id="updateById" parameterType="com.wdd.mybatch.core.po.TaskSlicePO">
+        <![CDATA[
+    update task_slice set
+                        slice_status = #{ sliceStatus },
+                        total_cnt = #{ totalCnt },
+                        success_cnt =    #{ successCnt },
+                        fail_cnt = #{ failCnt },
+                        skip_cnt = #{ skipCnt },
+                        round_number = #{ roundNumber },
+                        start_time = #{ startTime },
+                        end_time = #{ endTime },
+                        slice_data = #{ sliceData },
+                        fail_reason = #{ failReason },
+                        update_time = now()
+    where id = #{ id }
+    ]]>
+    </update>
+
+  <delete id="deleteById" parameterType="long">
+        <![CDATA[
+    delete
+    from task_slice
+    where id = #{ id }
+    ]]>
+    </delete>
 </mapper>

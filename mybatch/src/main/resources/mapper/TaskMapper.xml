@@ -38,18 +38,18 @@
     delete from task
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.wdd.mybatch.core.po.TaskPO">
-    insert into task (id, task_type, business_time, 
-      business_id, task_status, start_time, 
-      end_time, operator, total_cnt, 
-      success_cnt, fail_cnt, skip_cnt, 
-      expect_total_cnt, task_data)
-    values (#{id,jdbcType=BIGINT}, #{taskType,jdbcType=VARCHAR}, #{businessTime,jdbcType=TIMESTAMP}, 
-      #{businessId,jdbcType=VARCHAR}, #{taskStatus,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, 
-      #{endTime,jdbcType=TIMESTAMP}, #{operator,jdbcType=VARCHAR}, #{totalCnt,jdbcType=BIGINT}, 
-      #{successCnt,jdbcType=BIGINT}, #{failCnt,jdbcType=BIGINT}, #{skipCnt,jdbcType=BIGINT}, 
-      #{expectTotalCnt,jdbcType=BIGINT}, #{taskData,jdbcType=LONGVARCHAR})
-  </insert>
+<!--  <insert id="insert" parameterType="com.wdd.mybatch.core.po.TaskPO">-->
+<!--    insert into task (id, task_type, business_time, -->
+<!--      business_id, task_status, start_time, -->
+<!--      end_time, operator, total_cnt, -->
+<!--      success_cnt, fail_cnt, skip_cnt, -->
+<!--      expect_total_cnt, task_data)-->
+<!--    values (#{id,jdbcType=BIGINT}, #{taskType,jdbcType=VARCHAR}, #{businessTime,jdbcType=TIMESTAMP}, -->
+<!--      #{businessId,jdbcType=VARCHAR}, #{taskStatus,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, -->
+<!--      #{endTime,jdbcType=TIMESTAMP}, #{operator,jdbcType=VARCHAR}, #{totalCnt,jdbcType=BIGINT}, -->
+<!--      #{successCnt,jdbcType=BIGINT}, #{failCnt,jdbcType=BIGINT}, #{skipCnt,jdbcType=BIGINT}, -->
+<!--      #{expectTotalCnt,jdbcType=BIGINT}, #{taskData,jdbcType=LONGVARCHAR})-->
+<!--  </insert>-->
   <insert id="insertSelective" parameterType="com.wdd.mybatch.core.po.TaskPO">
     insert into task
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -219,4 +219,347 @@
       expect_total_cnt = #{expectTotalCnt,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+
+  <select id="queryById" parameterType="long"
+          resultType="com.wdd.mybatch.core.po.TaskPO">
+        <![CDATA[
+    select id,
+           task_type,
+           business_time,
+           business_id,
+           task_status,
+           task_data,
+           total_cnt,
+           success_cnt,
+           fail_cnt,
+           skip_cnt,
+           expect_total_cnt,
+           start_time,
+           end_time,
+           operator,
+           add_time,
+           update_time
+    from task
+    where id = #{ id }
+      limit 1
+    ]]>
+    </select>
+
+  <select id="lockById" parameterType="long"
+          resultType="com.wdd.mybatch.core.po.TaskPO">
+        <![CDATA[
+    select id,
+           task_type,
+           business_time,
+           business_id,
+           task_status,
+           task_data,
+           total_cnt,
+           success_cnt,
+           fail_cnt,
+           skip_cnt,
+           expect_total_cnt,
+           start_time,
+           end_time,
+           operator
+    from task
+    where id = #{ id }
+      limit 1
+        for update
+    ]]>
+    </select>
+
+  <select id="queryByTimeTypeBizId" resultType="com.wdd.mybatch.core.po.TaskPO">
+        <![CDATA[
+    select id,
+           task_type,
+           business_time,
+           business_id,
+           task_status,
+           task_data,
+           total_cnt,
+           success_cnt,
+           fail_cnt,
+           skip_cnt,
+           expect_total_cnt,
+           start_time,
+           end_time,
+           operator
+    from task
+    where business_time = #{ businessTime }
+      and task_type = #{ taskType }
+      and business_id = #{ businessId }
+      limit 1
+    ]]>
+    </select>
+
+  <select id="queryByTimeTypeFuzzyBizId" resultType="com.wdd.mybatch.core.po.TaskPO">
+        <![CDATA[
+    select id,
+           task_type,
+           business_time,
+           business_id,
+           task_status,
+           task_data,
+           total_cnt,
+           success_cnt,
+           fail_cnt,
+           skip_cnt,
+           expect_total_cnt,
+           start_time,
+           end_time,
+           operator
+    from task
+    where business_time = #{ businessTime }
+      and task_type = #{ taskType }
+      and business_id like concat(#{ fuzzyBusinessId }, '%')
+    ]]>
+    </select>
+
+  <select id="queryTodayUnFinishedTask" resultType="com.wdd.mybatch.core.po.TaskPO">
+        <![CDATA[
+    select id,
+           task_type,
+           business_time,
+           business_id,
+           task_status,
+           task_data,
+           total_cnt,
+           success_cnt,
+           fail_cnt,
+           skip_cnt,
+           expect_total_cnt,
+           start_time,
+           end_time,
+           operator,
+           update_time
+    from task
+    where business_time >= #{ minBusinessTime }
+      and end_time is null
+      and update_time < DATE_ADD(NOW(), INTERVAL -10 MINUTE)
+    ]]>
+    </select>
+
+
+  <select id="queryByTypeStatus" resultType="com.wdd.mybatch.core.po.TaskPO">
+    <![CDATA[
+        select id,
+                     task_type,
+                     business_time,
+                     business_id,
+                     task_status,
+                     task_data,
+                     total_cnt,
+                     success_cnt,
+                     fail_cnt,
+                     skip_cnt,
+                     expect_total_cnt,
+                     start_time,
+                     end_time,
+                     operator
+        from task
+        where task_type = #{ taskType }
+          and business_time >= #{ businessTimeStart }
+          and business_time < #{ businessTimeEnd }
+        ]]>
+    <if test="taskStatusList != null and !taskStatusList.isEmpty()">
+      and task_status in
+      <foreach collection="taskStatusList" item="taskStatus" open="(" close=")" separator="," index="index">
+        #{taskStatus}
+      </foreach>
+    </if>
+    order by id
+    limit #{ limit }
+  </select>
+
+  <insert id="insert" parameterType="com.wdd.mybatch.core.po.TaskPO" keyProperty="id">
+        <![CDATA[
+    insert into task (
+      id,
+      task_type,
+      business_time,
+      business_id,
+      task_status,
+      task_data,
+      total_cnt,
+      success_cnt,
+      fail_cnt,
+      skip_cnt,
+      expect_total_cnt,
+      start_time,
+      end_time,
+      operator,
+      add_time,
+      update_time
+    )
+    values (
+             #{ id },
+             #{ taskType },
+             #{ businessTime },
+             #{ businessId },
+             #{ taskStatus },
+             #{ taskData },
+             #{ totalCnt },
+             #{ successCnt },
+             #{ failCnt },
+             #{ skipCnt },
+             #{ expectTotalCnt },
+             #{ startTime },
+             #{ endTime },
+             #{operator},
+             now(),
+             now()
+           )
+    ]]>
+    </insert>
+
+  <update id="updateById" parameterType="com.wdd.mybatch.core.po.TaskPO">
+        <![CDATA[
+    update task set
+                  task_status = #{ taskStatus },
+                  total_cnt = #{ totalCnt },
+                  success_cnt =    #{ successCnt },
+                  fail_cnt = #{ failCnt },
+                  skip_cnt = #{ skipCnt },
+                  expect_total_cnt = #{ expectTotalCnt },
+                  start_time = #{ startTime },
+                  end_time = #{ endTime },
+                  task_data = #{ taskData },
+                  update_time = now()
+    where id = #{ id }
+    ]]>
+    </update>
+
+  <delete id="deleteById" parameterType="long">
+        <![CDATA[
+    delete
+    from task
+    where id = #{ id }
+    ]]>
+    </delete>
+
+  <select id="queryByTypeBizIdTime" resultType="com.wdd.mybatch.core.po.TaskPO">
+        <![CDATA[
+    select id,
+           task_type,
+           business_time,
+           business_id,
+           task_status,
+           task_data,
+           total_cnt,
+           success_cnt,
+           fail_cnt,
+           skip_cnt,
+           expect_total_cnt,
+           start_time,
+           end_time,
+           operator,
+           update_time
+    from task
+    where task_type = #{ taskType }
+      and business_id = #{ businessId }
+      and business_time >= #{ businessTimeStart }
+      and business_time <= #{ businessTimeEnd }
+    ]]>
+    </select>
+
+  <select id="queryTaskByOperatorAndBizTime"
+          resultType="com.wdd.mybatch.core.po.TaskPO">
+        <![CDATA[
+    select id,
+           task_type,
+           business_time,
+           business_id,
+           task_status,
+           task_data,
+           total_cnt,
+           success_cnt,
+           fail_cnt,
+           skip_cnt,
+           expect_total_cnt,
+           start_time,
+           end_time,
+           operator,
+           update_time
+    from task
+    where operator = #{operator}
+      and business_time >= #{ businessTimeStart }
+      and business_time <= #{ businessTimeEnd }
+    order by add_time desc limit #{ start }, #{ limit };
+    ]]>
+    </select>
+
+  <select id="queryNotSuccessTaskSituation"
+          resultType="com.wdd.mybatch.core.po.TaskPO">
+        <![CDATA[
+    SELECT task_type,
+           task_status,
+           count(1) as total_cnt
+    from task
+    where business_time >= #{startTime}
+      and business_time <= #{endTime}
+      and task_status != 'SUCCESS'
+    group by
+      task_type, task_status
+    ]]>
+    </select>
+
+  <select id="queryTaskList"
+          resultType="com.wdd.mybatch.core.po.TaskPO">
+    <![CDATA[
+        select id,
+               task_type,
+               business_time,
+               business_id,
+               task_status,
+               task_data,
+               total_cnt,
+               success_cnt,
+               fail_cnt,
+               skip_cnt,
+               expect_total_cnt,
+               start_time,
+               end_time,
+               operator,
+               update_time
+        from task
+        ]]>
+
+    <include refid="condition"></include>
+
+    <![CDATA[
+            order by business_time desc
+            limit #{ start }, #{ limit }
+        ]]>
+  </select>
+
+  <select id="countTask" resultType="java.lang.Long">
+    <![CDATA[
+        select count(1)
+        from task
+        ]]>
+
+    <include refid="condition"></include>
+  </select>
+
+  <sql id="condition">
+    <where>
+      <if test="operator != null">
+        and operator = #{operator}
+      </if>
+      <if test="taskType != null">
+        and task_type = #{ taskType }
+      </if>
+      <if test="taskStatus != null">
+        and task_status = #{ taskStatus }
+      </if>
+      <if test="businessTimeStart != null">
+        and business_time &gt;= #{ businessTimeStart }
+      </if>
+      <if test="businessTimeEnd != null">
+        and business_time &lt;= #{ businessTimeEnd }
+      </if>
+    </where>
+  </sql>
 </mapper>
